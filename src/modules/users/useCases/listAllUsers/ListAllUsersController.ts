@@ -2,6 +2,10 @@ import { Request, Response } from "express";
 
 import { ListAllUsersUseCase } from "./ListAllUsersUseCase";
 
+interface IRequestHeader {
+  user_id: string;
+}
+
 class ListAllUsersController {
   constructor(private listAllUsersUseCase: ListAllUsersUseCase) {}
 
@@ -10,8 +14,8 @@ class ListAllUsersController {
 
     try {
       const userAllList = this.listAllUsersUseCase.execute({
-        user_id: user_id.toString(),
-      });
+        user_id,
+      } as IRequestHeader);
 
       return response.json(userAllList);
     } catch (error) {
