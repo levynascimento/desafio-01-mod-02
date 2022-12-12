@@ -1,0 +1,270 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Desafio 01 - Módulo 2 - NodeJS",
+    "description": "Está é uma API de criar user, listar todos, caso o user seja admin, listar o user com o id passado na rota e tornar um user admin",
+    "version": "1.0.0",
+    "contact": {
+      "email": "levymartinsnascimento@gmail.com"
+    }
+  },
+  "paths": {
+    "/users": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Criar usuário",
+        "description": "Create um novo usuário",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  }
+                },
+                "example": {
+                  "name": "Levy",
+                  "email": "levymartinsnascimento@gmail.com"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "type": "object",
+                "properties": {
+                  "error": {
+                    "type": "default"
+                  }
+                },
+                "example": {
+                  "error": "Email já está em uso."
+                }
+              }
+            }
+            
+          },
+          "400": {
+            "description": "User já existe.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "error": "Usuário já existe."
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "parameters": [{
+          "in": "header",
+          "name": "user_id",
+          "required": "true",
+          "schema": {
+            "type": "string"
+          }
+        }],
+        "tags": ["User"],
+        "summary": "List todos os usuários.",
+        "description": "List todos os usuários, apenas se o user for admin.",
+        "responses": {
+          "201": {
+            "description": "Sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type":"string"
+                      },
+                      "email": {
+                        "type": "string"
+                      },
+                      "admin": {
+                        "type": "boolean"
+                      },
+                      "created_at": {
+                        "type": "string"
+                      },
+                      "updated_at": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "User não é permitido.",
+            "content": {
+              "application/json": {
+                "type": "object",
+                "properties": {
+                  "error": {
+                    "type": "default"
+                  }
+                },
+                "example": {
+                  "error": "Usuário não possui permissão."
+                }
+              }
+            }
+
+          }
+        }
+      }
+    },
+    "/users/{user_id}": {
+      "get": {
+        "parameters": [{
+          "in": "path",
+          "name": "user_id",
+          "required": "true",
+          "schema": {
+            "type": "string"
+          }
+        }],
+        "tags": ["User"],
+        "summary": "List um usuário específico.",
+        "description": "List um usuário específico de acordo com o ID na rota",
+        "responses": {
+          "201": {
+            "description": "Sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type":"string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "admin": {
+                      "type": "boolean"
+                    },
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "updated_at": {
+                      "type": "string"
+                    }
+                  } 
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User não encontrado.",
+            "content": {
+              "application/json": {
+                "type": "object",
+                "properties": {
+                  "error": {
+                    "type": "default"
+                  }
+                },
+                "example": {
+                  "error": "Usuário não encontrado."
+                }
+              }
+            }
+
+          }
+        }
+      }
+    },
+    "/users/{user_id}/admin": {
+      "patch": {
+        "parameters": [{
+          "in": "path",
+          "name": "user_id",
+          "required": "true",
+          "schema": {
+            "type": "string"
+          }
+        }],
+        "tags": ["User"],
+        "summary": "Tornar um usuário admin.",
+        "description": "Tornar um usuário admin.",
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type":"string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "admin": {
+                      "type": "boolean"
+                    },
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "updated_at": {
+                      "type": "string"
+                    }
+                  } 
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Usuário não encontrado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": "string"
+                  },
+                  "example": {
+                    "error": "Usuário não encontrado."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
